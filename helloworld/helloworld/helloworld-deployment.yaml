@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld
+  labels:
+    app: helloworld
+spec:
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+  selector:
+    app: helloworld
+  type: LoadBalancer  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld
+spec:
+  selector:
+    matchLabels:
+      app: helloworld
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: helloworld
+        tier: api
+    spec:
+      containers:
+      - name: helloworld
+        image: neranjana/helloworld:v1.0
+        ports:
+        - containerPort: 8080

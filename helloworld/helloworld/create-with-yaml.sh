@@ -1,0 +1,1 @@
+kubectl create -f ./helloworld-deployment.yaml
