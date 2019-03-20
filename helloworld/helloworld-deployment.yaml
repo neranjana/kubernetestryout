@@ -6,7 +6,8 @@ metadata:
     app: helloworld
 spec:
   ports:
-  - port: 8080
+  - nodePort: 30345
+    port: 8080
     name: http
     targetPort: 8080
   selector:
@@ -30,6 +31,6 @@ spec:
     spec:
       containers:
       - name: helloworld
-        image: neranjana/helloworld:v1.0
+        image: neranjana/helloworld:1.0
         ports:
         - containerPort: 8080
