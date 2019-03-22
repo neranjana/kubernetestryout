@@ -6,10 +6,11 @@ metadata:
     app: helloworld
 spec:
   ports:
-  - nodePort: 30345
-    port: 8080
+  - nodePort: 30345 # Exposes this port to the outside world. Use 'minikube ip' to get the ip address of the cluster
+                    # Then use http://<ip from minikube ip>:<port> to access the service
+    port: 80 # exposes this port within Kubernetes environment
     name: http
-    targetPort: 8080
+    targetPort: 8080 # this is the port that should be exposed by the container
   selector:
     app: helloworld
   type: LoadBalancer  
@@ -33,4 +34,4 @@ spec:
       - name: helloworld
         image: neranjana/helloworld:1.0
         ports:
-        - containerPort: 8080
+        - containerPort: 8080 # lets trafic through this port to the container. Application inside should be listening to this

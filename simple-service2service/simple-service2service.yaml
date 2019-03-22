@@ -13,7 +13,8 @@ metadata:
     app: timeservice
 spec:
   ports:
-  - nodePort: 30901 # exposes this port to the outside world
+  - nodePort: 30901 # Exposes this port to the outside world. Use 'minikube ip' to get the ip address of the cluster
+                    # Then use http://<ip from minikube ip>:<port> to access the service
     port: 80 # exposes this port within Kubernetes environment
     name: http
     targetPort: 8901 # this is the port that should be exposed by the container
@@ -29,7 +30,8 @@ metadata:
     app: greetingservice
 spec:
   ports:
-  - nodePort: 30902 # exposes this port to the outside world
+  - nodePort: 30902 # Exposes this port to the outside world. Use 'minikube ip' to get the ip address of the cluster
+                    # Then use http://<ip from minikube ip>:<port> to access the service
     port: 80 # exposes this port within Kubernetes environment
     name: http
     targetPort: 8902 # this is the port that should be exposed by the container
