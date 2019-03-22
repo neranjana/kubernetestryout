@@ -1,20 +1,17 @@
 var http = require("http");
 var instanceId = Math.floor(Math.random() * 100);
 
-const thisServicePort = parseInt(process.env.THIS_SERVICE_PORT, 10);
+const timeServiceUrl = process.env.TIME_SERVICE_URL;
 
-const timeServiceHost = process.env.TIME_SERVICE_HOST;
-const timeServicePort = parseInt(process.env.TIME_SERVICE_PORT, 10);
-
-// to run this, execute 
-// TIME_SERVICE_PORT=8901 TIME_SERVICE_HOST=localhost THIS_SERVICE_PORT=8902 node greetingservice.js
+// to run this without any container, first start timeservice on localhost and execute 
+// TIME_SERVICE_URL=http://localhost:8901 node greetingservice.js
 
 http.createServer(function (request, response) {
 
     var timeInfo = '';
 
     // getting time from time service
-    http.get(`http://${timeServiceHost}:${timeServicePort}`, (resp) => {
+    http.get(timeServiceUrl, (resp) => {
         // A chunk of data has been recieved.
         resp.on('data', (chunk) => {
             timeInfo += chunk;
@@ -40,7 +37,7 @@ http.createServer(function (request, response) {
     // HTTP Status: 200 : OK
     // Content Type: text/plain
 
-}).listen(thisServicePort)
+}).listen(8902)
 
 // Console will print the message
-console.log('Server running at http://127.0.0.1:' + thisServicePort);
+console.log('Server running at http://127.0.0.1:8902');
