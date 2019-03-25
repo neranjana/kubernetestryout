@@ -1,2 +1,2 @@
 #!/bin/sh
-kubectl delete -f ./simple-service2service.yaml
+kubectl delete -f ./simple-service2service-with-loadbalancer.yaml

@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: ConfigMap # a map of environment variables that can be used by any container by using envFrom and configMapRef
+metadata:
+  name: my-env
+data: # this section will have key value pairs
+  TIME_SERVICE_URL: http://timeservice:80 # this gets in to the container as environment variable $TIME_SERVICE_URL
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: timeservice
+  labels:
+    app: timeservice
+spec:
+  ports:
+  - port: 80 # exposes this port within Kubernetes environment
+    name: http
+    targetPort: 8901 # this is the port that should be exposed by the container
+  selector:
+    app: timeservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greetingservice
+  labels:
+    app: greetingservice
+spec:
+  ports:
+  - port: 80 # exposes this port within Kubernetes environment
+    name: http
+    targetPort: 8902 # this is the port that should be exposed by the container
+  selector:
+    app: greetingservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timeservice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: timeservice
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: timeservice
+        tier: api
+    spec:
+      containers:
+      - name: timeservice
+        image: neranjana/timeservice:2.1
+        ports:
+        - containerPort: 8901 # lets trafic through this port to the container. Application inside should be listening to this
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greetingservice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: greetingservice
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: greetingservice
+        tier: api
+    spec:
+      containers:
+      - name: greetingservice
+        envFrom:
+          - configMapRef:
+              name: my-env # Points to the config map at the top of this file. Gets all the key value pairs and injects them.
+        image: neranjana/greetingservice:2.1
+        ports:
+        - containerPort: 8902 # lets trafic through this port to the container. Application inside should be listening to this
