@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld
+  labels:
+    app: helloworld
+spec:
+  ports:
+  - port: 9080 # exposes this port within Kubernetes environment
+    name: http
+    targetPort: 8080 # this is the port that should be exposed by the container
+  selector:
+    app: helloworld
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld
+spec:
+  selector:
+    matchLabels:
+      app: helloworld
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: helloworld
+        tier: api
+    spec:
+      containers:
+      - name: helloworld
+        image: neranjana/helloworld:1.0
+        ports:
+        - containerPort: 8080 # lets trafic through this port to the container. Application inside should be listening to this
