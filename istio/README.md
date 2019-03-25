@@ -12,5 +12,10 @@
 `kubectl label namespace default istio-injection=enabled`
 7. Deploy everything on istio enabled kubernetes by executing
 `./create-on-istio.sh`
-8. To clean up everyting on istio, execute
+8. Get the minikube ip address using `minikube ip`. The Istio ingress gateway is configured on port `31380`
+9. Test the services using the following
+`curl http://<ipaddress>:31380/helloworld`
+`curl http://<ipaddress>:31380/time`
+`curl http://<ipaddress>:31380/greet`
+10. To clean up everyting on istio, execute
 `./delete-on-istio.sh`
